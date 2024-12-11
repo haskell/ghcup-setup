@@ -1,0 +1,49 @@
+name: Test ghcup action
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        runs-on:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./ghcup
+        with:
+          version: "0.1.30.0"
+
+      - run: ghcup config
+
+      - run: ghcup debug-info
+
+      - run: ghcup tool-requirements
+      
+      - run: ghcup list
+
+      - run: ghcup install ghc latest --set
+      - run: ghcup whereis ghc latest
+      - run: which ghc
+      - run: ghc --version
+      
+      - run: ghcup install cabal latest --set
+      - run: ghcup whereis cabal latest
+      - run: which cabal
+      - run: cabal --version
+      
+      - run: ghcup install stack latest --set
+      - run: ghcup whereis stack latest
+      - run: which stack
+      - run: stack --version
+      
+      - run: ghcup install hls latest --set
+      - run: ghcup whereis hls latest
+      - run: which haskell-language-server-wrapper
+      - run: haskell-language-server-wrapper --version

@@ -1,0 +1,4 @@
+pre-commit:
+  commands:
+    build:
+      run: make -C ghcup

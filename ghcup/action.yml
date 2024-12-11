@@ -1,0 +1,24 @@
+name: GHCup
+description: Download a pre-built version of GHCup and add it to the PATH
+author: Andrea Bedini
+
+branding:
+  icon: download
+
+inputs:
+  version:
+    description: Version to install
+    required: true
+  extra-release-channels:
+    description: Additional release-channels
+    required: true
+
+outputs:
+  path:
+    description: Path to the installed GHCup
+  version:
+    description: Version of the installed GHCup
+
+runs:
+  using: node20
+  main: dist/index.js
