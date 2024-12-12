@@ -70,7 +70,7 @@ async function ghcup(version: string) {
 
 export type Opts = {
   version: string,
-  extra_release_channels: string[]
+  release_channels: string[]
 }
 
 export async function main(opts: Opts) {
@@ -87,7 +87,7 @@ export async function main(opts: Opts) {
   core.debug(`ghcup bindir is ${bindir}`)
   core.addPath(bindir);
 
-  for (const channel in opts.extra_release_channels) {
-    await exec.exec(ghcupPath, ['config', 'add-release-channel', channel]);
-  }
+  await exec.exec(ghcupPath, [
+    'config', 'set', 'url-source', JSON.stringify(opts.release_channels)
+  ]);
 }
