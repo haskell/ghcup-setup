@@ -12,20 +12,20 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
+        version:
+          - latest
+          - '0.1.30.0'
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: ./ghcup
         with:
-          version: "0.1.30.0"
+          version: ${{ matrix.version }}
 
       - run: ghcup config
-
       - run: ghcup debug-info
-
       - run: ghcup tool-requirements
-      
       - run: ghcup list
 
       - run: ghcup install ghc latest --set

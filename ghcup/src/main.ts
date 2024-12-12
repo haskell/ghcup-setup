@@ -7,8 +7,6 @@ import exec from '@actions/exec';
 
 const ext = platform.isWindows ? ".exe" : "";
 
-const metadata_url = "https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/develop/ghcup-0.0.8.yaml";
-
 type Architecture = typeof platform.arch;
 type GHCupArch = 'aarch64' | 'armv7' | 'i386' | 'x86_64';
 
@@ -29,7 +27,11 @@ const ghcup_os_map: Map<Platform, GHCupOS> = new Map([
 ]);
 
 function ghcup_url(version: string, arch: GHCupArch, os: GHCupOS): string {
-  return `https://downloads.haskell.org/ghcup/${version}/${arch}-${os}-ghcup-${version}${ext}`;
+  if (version == 'latest') {
+    return `https://downloads.haskell.org/ghcup/${arch}-${os}-ghcup${ext}`;
+  } else {
+    return `https://downloads.haskell.org/ghcup/${version}/${arch}-${os}-ghcup-${version}${ext}`;
+  }
 }
 
 async function ghcup(version: string) {
@@ -40,16 +42,12 @@ async function ghcup(version: string) {
 
     const arch = ghcup_arch_map.get(platform.arch);
     if (arch == undefined) {
-      const msg =  `GHCup does not support architecture ${platform.arch}`;
-      // core.setFailed(msg);
-      throw msg;
+      throw `GHCup does not support architecture ${platform.arch}`;
     }
 
     const os = ghcup_os_map.get(platform.platform);
     if (os == undefined) {
-      const msg = `GHCup does not support platform ${platform.platform}`
-      // core.setFailed(msg);
-      throw msg;
+      throw `GHCup does not support platform ${platform.platform}`;
     }
 
     const url = ghcup_url(version, arch, os);

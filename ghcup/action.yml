@@ -8,10 +8,9 @@ branding:
 inputs:
   version:
     description: Version to install
-    required: true
+    default: latest
   extra-release-channels:
     description: Additional release-channels
-    required: true
 
 outputs:
   path:
