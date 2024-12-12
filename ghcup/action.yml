@@ -9,8 +9,10 @@ inputs:
   version:
     description: Version to install
     default: latest
-  extra-release-channels:
+  release-channels:
     description: Additional release-channels
+    default: |
+      GHCupURL
 
 outputs:
   path:

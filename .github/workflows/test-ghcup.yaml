@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  simple:
     strategy:
       matrix:
         runs-on:
@@ -47,3 +47,30 @@ jobs:
       - run: ghcup whereis hls latest
       - run: which haskell-language-server-wrapper
       - run: haskell-language-server-wrapper --version
+
+  vanilla_channel:
+    strategy:
+      matrix:
+        runs-on:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./ghcup
+        with:
+          release-channels: |
+            GHCupURL
+            https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/develop/ghcup-vanilla-0.0.8.yaml
+
+      - run: ghcup config
+      - run: ghcup debug-info
+      - run: ghcup tool-requirements
+      - run: ghcup list
+
+      - run: ghcup install ghc latest --set
+      - run: ghcup whereis ghc latest
+      - run: which ghc
+      - run: ghc --version
