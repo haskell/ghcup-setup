@@ -18,7 +18,6 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: ./ghcup
         with:
           version: ${{ matrix.version }}
@@ -32,7 +31,27 @@ jobs:
       - run: ghcup whereis ghc latest
       - run: which ghc
       - run: ghc --version
-      
+
+      - if: ${{ runner.os == 'Windows' }}
+        run: ghcup run bash -- -c 'echo yes'
+    
+  all-tools:
+    strategy:
+      matrix:
+        runs-on:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./ghcup
+
+      - run: ghcup config
+      - run: ghcup debug-info
+      - run: ghcup tool-requirements
+      - run: ghcup list
+
       - run: ghcup install cabal latest --set
       - run: ghcup whereis cabal latest
       - run: which cabal
@@ -48,7 +67,7 @@ jobs:
       - run: which haskell-language-server-wrapper
       - run: haskell-language-server-wrapper --version
 
-  vanilla_channel:
+  channels:
     strategy:
       matrix:
         runs-on:
@@ -69,8 +88,3 @@ jobs:
       - run: ghcup debug-info
       - run: ghcup tool-requirements
       - run: ghcup list
-
-      - run: ghcup install ghc latest --set
-      - run: ghcup whereis ghc latest
-      - run: which ghc
-      - run: ghc --version
