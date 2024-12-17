@@ -80,12 +80,18 @@ export async function main(opts: Opts) {
   var { stdout } = await exec.getExecOutput(ghcupPath, ["--numeric-version"]);
   const effective_version = stdout.trim();
   core.setOutput("version", effective_version);
-  core.setOutput("path", ghcupPath)
+  core.setOutput("path", ghcupPath);
 
   var { stdout } = await exec.getExecOutput(ghcupPath, ["whereis", "bindir"]);
   const bindir = stdout.trim();
-  core.debug(`ghcup bindir is ${bindir}`)
+  core.debug(`ghcup bindir is ${bindir}`);
   core.addPath(bindir);
+
+  if (platform.isWindows) {
+	  const ghcup_msys2 = process.env['GHCUP_MSYS2'] ?? 'C:\\msys64';
+	  core.exportVariable('GHCUP_MSYS2', ghcup_msys2);
+      core.debug(`GHCUP_MSYS2 is ${ghcup_msys2}`);
+  }
 
   await exec.exec(ghcupPath, [
     'config', 'set', 'url-source', JSON.stringify(opts.release_channels)
