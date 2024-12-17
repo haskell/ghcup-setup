@@ -48,7 +48,10 @@ jobs:
       - run: which haskell-language-server-wrapper
       - run: haskell-language-server-wrapper --version
 
-  vanilla_channel:
+      - if: runner.os == 'Windows'
+        run: ghcup run -m sh -- -c 'pacman --version'
+
+  vanilla-channel:
     strategy:
       matrix:
         runs-on:
@@ -62,8 +65,7 @@ jobs:
       - uses: ./ghcup
         with:
           release-channels: |
-            GHCupURL
-            https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/develop/ghcup-vanilla-0.0.8.yaml
+            https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/master/ghcup-vanilla-0.0.8.yaml
 
       - run: ghcup config
       - run: ghcup debug-info
@@ -74,3 +76,6 @@ jobs:
       - run: ghcup whereis ghc latest
       - run: which ghc
       - run: ghc --version
+
+      - if: runner.os == 'Windows'
+        run: ghcup run -m sh -- -c 'pacman --version'
