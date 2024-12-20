@@ -59,7 +59,7 @@ async function ghcup(version: string) {
 
     const ghcupPath = await tc.downloadTool(url, dest);
 
-    if (platform.isLinux || platform.isMacOS) {
+    if (!(platform.isWindows)) {
       await chmod(ghcupPath, "0765");
     }
 
