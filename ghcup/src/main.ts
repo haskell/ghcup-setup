@@ -18,12 +18,13 @@ const ghcup_arch_map: Map<Architecture, GHCupArch> = new Map([
 ]);
 
 type Platform = typeof platform.platform;
-type GHCupOS = 'apple-darwin' | 'linux' | 'mingw64';
+type GHCupOS = 'apple-darwin' | 'linux' | 'mingw64' | 'portbld-freebsd';
 
 const ghcup_os_map: Map<Platform, GHCupOS> = new Map([
   ['darwin', 'apple-darwin'],
   ['linux', 'linux'],
-  ['win32', 'mingw64']
+  ['win32', 'mingw64'],
+  ['freebsd', 'portbld-freebsd']
 ]);
 
 function ghcup_url(version: string, arch: GHCupArch, os: GHCupOS): string {
