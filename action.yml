@@ -1,4 +1,4 @@
-name: GHCup
+name: GHCup Setup
 description: Download a pre-built version of GHCup and add it to the PATH
 author: Andrea Bedini
 
