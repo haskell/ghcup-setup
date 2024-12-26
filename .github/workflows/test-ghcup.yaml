@@ -12,6 +12,7 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
+          - [self-hosted, FreeBSD, X64]
         version:
           - latest
           - '0.1.30.0'
