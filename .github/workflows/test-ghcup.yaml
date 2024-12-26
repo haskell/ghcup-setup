@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./ghcup
+      - uses: ./
         with:
           version: ${{ matrix.version }}
 
@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./ghcup
+      - uses: ./
         with:
           release-channels: |
             https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/master/ghcup-vanilla-0.0.8.yaml
