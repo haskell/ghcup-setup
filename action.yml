@@ -7,10 +7,10 @@ branding:
 
 inputs:
   version:
-    description: Version to install
+    description: GHCup version to install
     default: latest
   release-channels:
-    description: Additional release-channels
+    description: Set the release-channels
     default: |
       GHCupURL
 
@@ -22,4 +22,4 @@ outputs:
 
 runs:
   using: node20
-  main: dist/index.js
+  main: ghcup/dist/index.js
