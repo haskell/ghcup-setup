@@ -67,6 +67,7 @@ jobs:
         with:
           release-channels: |
             https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/master/ghcup-vanilla-0.0.8.yaml
+            https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/master/ghcup-prereleases-0.0.8.yaml
 
       - run: ghcup config
       - run: ghcup debug-info
@@ -75,6 +76,11 @@ jobs:
 
       - run: ghcup install ghc latest --set
       - run: ghcup whereis ghc latest
+      - run: which ghc
+      - run: ghc --version
+
+      - run: ghcup install ghc latest-prerelease --set
+      - run: ghcup whereis ghc latest-prerelease
       - run: which ghc
       - run: ghc --version
 
