@@ -64,8 +64,13 @@ jobs:
 
 ## Outputs
 
-| Name    | Description                    | Type     |
-|---------|--------------------------------|----------|
-| path    | Path to the installed GHCup    | `string` |
-| version | Version of the installed GHCup | `string` |
+| Name     | Description                    | Type     |
+|----------|--------------------------------|----------|
+| path     | Path to the installed GHCup    | `string` |
+| version  | Version of the installed GHCup | `string` |
+| basedir  | Base directory of GHCup        | `string` |
+| bindir   | Binary directory of GHCup      | `string` |
+| cachedir | Cache directory of GHCup       | `string` |
+| logsdir  | Log directory of GHCup         | `string` |
+| confdir  | Config directory of GHCup      | `string` |
 

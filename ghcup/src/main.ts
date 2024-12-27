@@ -141,6 +141,27 @@ export async function main(opts: Opts) {
   const bindir = stdout.trim();
   core.debug(`ghcup bindir is ${bindir}`);
   core.addPath(bindir);
+  core.setOutput("bindir", bindir);
+
+  var { stdout } = await exec.getExecOutput(ghcupPath, ["whereis", "basedir"]);
+  const basedir = stdout.trim();
+  core.debug(`ghcup basedir is ${basedir}`);
+  core.setOutput("basedir", basedir);
+
+  var { stdout } = await exec.getExecOutput(ghcupPath, ["whereis", "cachedir"]);
+  const cachedir = stdout.trim();
+  core.debug(`ghcup cachedir is ${cachedir}`);
+  core.setOutput("cachedir", cachedir);
+
+  var { stdout } = await exec.getExecOutput(ghcupPath, ["whereis", "logsdir"]);
+  const logsdir = stdout.trim();
+  core.debug(`ghcup logsdir is ${logsdir}`);
+  core.setOutput("logsdir", logsdir);
+
+  var { stdout } = await exec.getExecOutput(ghcupPath, ["whereis", "confdir"]);
+  const confdir = stdout.trim();
+  core.debug(`ghcup confdir is ${confdir}`);
+  core.setOutput("confdir", confdir);
 
   if (platform.isWindows) {
     const ghcup_msys2 = process.env["GHCUP_MSYS2"] ?? "C:\\msys64";
