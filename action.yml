@@ -19,9 +19,19 @@ inputs:
 
 outputs:
   path:
-    description: Path to the installed GHCup
+    description: Path to the installed GHCup binary
   version:
     description: Version of the installed GHCup
+  basedir:
+    description: Base directory of GHCup
+  bindir:
+    description: Binary directory of GHCup
+  cachedir:
+    description: Cache directory of GHCup
+  logsdir:
+    description: Log directory of GHCup
+  confdir:
+    description: Config directory of GHCup
 
 runs:
   using: node20
