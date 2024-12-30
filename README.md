@@ -56,10 +56,11 @@ jobs:
 
 ## Inputs
 
-| Name             | Description              | Type       | Default    |
-|------------------|--------------------------|------------|------------|
-| version          | GHCup version to install | `string`   | `latest`   |
-| release-channels | Set the release-channels | `string[]` | `GHCupURL` |
+| Name             | Description                                                     | Type       | Default    |
+|------------------|-----------------------------------------------------------------|------------|------------|
+| version          | GHCup version to install                                        | `string`   | `latest`   |
+| release-channels | Set the release-channels                                        | `string[]` | `GHCupURL` |
+| stack-hook       | Install the GHCup stack hook (GHCs are installed through ghcup) | `boolean`  | `false`    |
 
 ## Outputs
 

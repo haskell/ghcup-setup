@@ -22,6 +22,7 @@ jobs:
 
       - uses: ./
         with:
+          stack-hook: true
           version: ${{ matrix.version }}
 
       - run: ghcup config
@@ -51,6 +52,12 @@ jobs:
 
       - if: runner.os == 'Windows'
         run: ghcup run -m sh -- -c 'pacman --version'
+
+      - name: Stack hook test
+        run: |
+          ghcup install stack latest
+          cat $(stack path --stack-root)/hooks/ghc-install.sh
+        shell: bash
 
   vanilla-channel:
     strategy:
