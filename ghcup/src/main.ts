@@ -1,4 +1,6 @@
-import * as path from 'path'
+import * as path from 'path';
+import * as fs from 'fs';
+import os from 'os';
 import { chmod } from 'fs/promises';
 
 import tc from '@actions/tool-cache';
@@ -27,11 +29,13 @@ const ghcup_os_map: Map<Platform, GHCupOS> = new Map([
   ['freebsd', 'portbld-freebsd']
 ]);
 
-function ghcup_url(version: string, arch: GHCupArch, os: GHCupOS): string {
+const hook_url: string = 'https://www.haskell.org/ghcup/sh/hooks/stack/ghc-install.sh';
+
+function ghcup_url(version: string, arch: GHCupArch, gos: GHCupOS): string {
   if (version == 'latest') {
-    return `https://downloads.haskell.org/ghcup/${arch}-${os}-ghcup${ext}`;
+    return `https://downloads.haskell.org/ghcup/${arch}-${gos}-ghcup${ext}`;
   } else {
-    return `https://downloads.haskell.org/ghcup/${version}/${arch}-${os}-ghcup-${version}${ext}`;
+    return `https://downloads.haskell.org/ghcup/${version}/${arch}-${gos}-ghcup-${version}${ext}`;
   }
 }
 
@@ -46,12 +50,12 @@ async function ghcup(version: string) {
       throw `GHCup does not support architecture ${platform.arch}`;
     }
 
-    const os = ghcup_os_map.get(platform.platform);
-    if (os == undefined) {
+    const gos = ghcup_os_map.get(platform.platform);
+    if (gos == undefined) {
       throw `GHCup does not support platform ${platform.platform}`;
     }
 
-    const url = ghcup_url(version, arch, os);
+    const url = ghcup_url(version, arch, gos);
 
     const tempDirectory = process.env['RUNNER_TEMP'] || '';
     const ghcupExeName = `ghcup${ext}`;
@@ -69,9 +73,45 @@ async function ghcup(version: string) {
   }
 }
 
+function getStackRoot() {
+  if (platform.isWindows) {
+	const appdata = process.env['APPDATA'] || '';
+    return process.env['STACK_ROOT'] ?? path.join(appdata, 'stack');
+  } else {
+	const hdir = os.homedir();
+    return process.env['STACK_ROOT'] ?? path.join(hdir, '.stack');
+  }
+}
+
+async function installStackHook() {
+  const stack_root = getStackRoot();
+  const hook_dest = path.join(stack_root, 'hooks', 'ghc-install.sh')
+  fs.rmSync(hook_dest, {
+    force: true,
+  });
+  // we do not cache, it isn't versioned
+  const hookPath = await tc.downloadTool(hook_url, hook_dest);
+  if (!(platform.isWindows)) {
+    await chmod(hook_dest, "0765");
+  }
+  core.debug(`stack ghcup hook is at ${hookPath}`);
+}
+
+export function parseYAMLBoolean(name: string, val: string): boolean {
+  const trueValue = ['true', 'True', 'TRUE'];
+  const falseValue = ['false', 'False', 'FALSE'];
+  if (trueValue.includes(val)) return true;
+  if (falseValue.includes(val)) return false;
+  throw new TypeError(
+    `Action input "${name}" does not meet YAML 1.2 "Core Schema" specification: \n` +
+      `Supported boolean values: \`true | True | TRUE | false | False | FALSE\``
+  );
+}
+
 export type Opts = {
   version: string,
-  release_channels: string[]
+  release_channels: string[],
+  stack_hook: boolean
 }
 
 export async function main(opts: Opts) {
@@ -94,7 +134,12 @@ export async function main(opts: Opts) {
       core.debug(`GHCUP_MSYS2 is ${ghcup_msys2}`);
   }
 
+  if (opts.stack_hook) {
+	  installStackHook()
+  }
+
   await exec.exec(ghcupPath, [
     'config', 'set', 'url-source', JSON.stringify(opts.release_channels)
   ]);
 }
+

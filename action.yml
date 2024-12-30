@@ -13,6 +13,9 @@ inputs:
     description: Set the release-channels
     default: |
       GHCupURL
+  stack-hook:
+    description: Install the GHCup stack hook (GHCs are installed through ghcup)
+    default: false
 
 outputs:
   path:
