@@ -74,13 +74,17 @@ async function ghcup(version: string) {
 }
 
 function getStackRoot() {
-  if (platform.isWindows) {
+  const stackXdg = process.env['STACK_XDG'];
+
+  const defaultStackRoot = (() => { if (platform.isWindows) {
 	const appdata = process.env['APPDATA'] || '';
-    return process.env['STACK_ROOT'] ?? path.join(appdata, 'stack');
+    return stackXdg ? path.join(process.env['XDG_DATA_HOME'] ?? appdata, 'stack') : path.join(appdata, 'stack');
   } else {
 	const hdir = os.homedir();
-    return process.env['STACK_ROOT'] ?? path.join(hdir, '.stack');
+    return stackXdg ? path.join(process.env['XDG_DATA_HOME'] ?? path.join(hdir, '.local', 'share'),'stack') : path.join(hdir, '.stack');
   }
+  })()
+    return process.env['STACK_ROOT'] ?? defaultStackRoot;
 }
 
 async function installStackHook() {
