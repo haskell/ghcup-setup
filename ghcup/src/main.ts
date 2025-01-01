@@ -101,15 +101,12 @@ async function installStackHook() {
   core.debug(`stack ghcup hook is at ${hookPath}`);
 }
 
-export function parseYAMLBoolean(name: string, val: string): boolean {
-  const trueValue = ['true', 'True', 'TRUE'];
-  const falseValue = ['false', 'False', 'FALSE'];
-  if (trueValue.includes(val)) return true;
-  if (falseValue.includes(val)) return false;
-  throw new TypeError(
-    `Action input "${name}" does not meet YAML 1.2 "Core Schema" specification: \n` +
-      `Supported boolean values: \`true | True | TRUE | false | False | FALSE\``
-  );
+export function getInputAsBool(
+    name: string,
+    options?: core.InputOptions
+): boolean {
+    const result = core.getInput(name, options);
+    return result.toLowerCase() === "true";
 }
 
 export type Opts = {
