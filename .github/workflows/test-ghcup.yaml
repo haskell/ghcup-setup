@@ -15,7 +15,7 @@ jobs:
           - [self-hosted, FreeBSD, X64]
         version:
           - latest
-          - '0.1.30.0'
+          - "0.1.30.0"
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v4
@@ -34,17 +34,17 @@ jobs:
       - run: ghcup whereis ghc latest
       - run: which ghc
       - run: ghc --version
-      
+
       - run: ghcup install cabal latest --set
       - run: ghcup whereis cabal latest
       - run: which cabal
       - run: cabal --version
-      
+
       - run: ghcup install stack latest --set
       - run: ghcup whereis stack latest
       - run: which stack
       - run: stack --version
-      
+
       - run: ghcup install hls latest --set
       - run: ghcup whereis hls latest
       - run: which haskell-language-server-wrapper
