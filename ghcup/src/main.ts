@@ -114,14 +114,6 @@ async function installStackHook() {
   core.debug(`stack ghcup hook is at ${hookPath}`);
 }
 
-export function getInputAsBool(
-  name: string,
-  options?: core.InputOptions,
-): boolean {
-  const result = core.getInput(name, options);
-  return result.toLowerCase() === "true";
-}
-
 export type Opts = {
   version: string;
   release_channels: string[];
