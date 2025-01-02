@@ -21,9 +21,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: ./
-        with:
-          stack-hook: true
-          version: ${{ matrix.version }}
 
       - run: ghcup config
       - run: ghcup debug-info
@@ -52,12 +49,6 @@ jobs:
 
       - if: runner.os == 'Windows'
         run: ghcup run -m sh -- -c 'pacman --version'
-
-      - name: Stack hook test
-        run: |
-          ghcup install stack latest
-          cat $(stack path --stack-root)/hooks/ghc-install.sh
-        shell: bash
 
   vanilla-channel:
     strategy:
@@ -98,3 +89,39 @@ jobs:
 
       - if: runner.os == 'Windows'
         run: ghcup run -m sh -- -c 'pacman --version'
+
+  config:
+    strategy:
+      matrix:
+        runs-on:
+          - ubuntu-latest
+        version:
+          - latest
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./
+        with:
+          stack-hook: true
+          version: ${{ matrix.version }}
+          config: |
+            # see https://github.com/haskell/ghcup-hs/blob/master/data/config.yaml
+            # for full documentation
+            url-source:
+              - StackSetupURL
+            verbose: true
+
+      - run: ghcup config
+      - run: ghcup debug-info
+      - run: ghcup list
+
+      - run: ghcup -s GHCupURL install stack latest --set
+      - run: ghcup -s GHCupURL whereis stack latest
+      - run: which stack
+      - run: stack --version
+
+      - name: Stack hook test
+        run: |
+          cat $(stack path --stack-root)/hooks/ghc-install.sh
+        shell: bash

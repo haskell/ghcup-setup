@@ -47,9 +47,12 @@ jobs:
         with:
           ghc: ${{ matrix.ghc }}
           cabal: ${{ matrix.cabal }}
-          release-channels: |
-            GHCupURL
-            https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/master/ghcup-prereleases-0.0.8.yaml
+          config: |
+            # see https://github.com/haskell/ghcup-hs/blob/master/data/config.yaml
+            # for full documentation
+            url-source:
+              - GHCupURL
+              - prereleases
       - run: |
           runhaskell Hello.hs
 ```
@@ -63,7 +66,7 @@ jobs:
 | cabal            | cabal-install version to install                                | `string `  | `undefined`|
 | stack            | Stack version to install                                        | `string `  | `undefined`|
 | hls              | HLS version to install                                          | `string `  | `undefined`|
-| release-channels | Set the release-channels                                        | `string[]` | `GHCupURL` |
+| config           | Set ghcup config                                                | `string[]` | `[]`       |
 | stack-hook       | Install the GHCup stack hook (GHCs are installed through ghcup) | `boolean`  | `false`    |
 
 ## Outputs
@@ -77,4 +80,3 @@ jobs:
 | cachedir | Cache directory of GHCup       | `string` |
 | logsdir  | Log directory of GHCup         | `string` |
 | confdir  | Config directory of GHCup      | `string` |
-
