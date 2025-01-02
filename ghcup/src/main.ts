@@ -116,12 +116,13 @@ async function installStackHook() {
 
 export type Opts = {
   version: string;
-  release_channels: string[];
+  release_channels?: string[];
   stack_hook: boolean;
   ghc?: string;
   cabal?: string;
   stack?: string;
   hls?: string;
+  config?: string;
 };
 
 export async function main(opts: Opts) {
@@ -169,12 +170,21 @@ export async function main(opts: Opts) {
     installStackHook();
   }
 
-  await exec.exec(ghcupPath, [
-    "config",
-    "set",
-    "url-source",
-    JSON.stringify(opts.release_channels),
-  ]);
+  if (opts.config) {
+    await exec.exec(ghcupPath, ["config", "set", JSON.stringify(opts.config)]);
+  }
+
+  if (opts.release_channels && opts.release_channels.length > 0) {
+    core.warning(
+      "'release-channels' option is deprecated, use 'config' instead!",
+    );
+    await exec.exec(ghcupPath, [
+      "config",
+      "set",
+      "url-source",
+      JSON.stringify(opts.release_channels),
+    ]);
+  }
 
   if (opts.ghc) {
     await exec.exec(ghcupPath, ["install", "ghc", "--set", opts.ghc]);
