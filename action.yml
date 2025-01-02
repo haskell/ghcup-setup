@@ -16,6 +16,14 @@ inputs:
   stack-hook:
     description: Install the GHCup stack hook (GHCs are installed through ghcup)
     default: false
+  ghc:
+    description: GHC version to install
+  cabal:
+    description: cabal-install version to install
+  stack:
+    description: Stack version to install
+  hls:
+    description: HLS version to install
 
 outputs:
   path:
