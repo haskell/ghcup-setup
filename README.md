@@ -45,12 +45,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: haskell/ghcup-setup@v1
         with:
+          ghc: ${{ matrix.ghc }}
+          cabal: ${{ matrix.cabal }}
           release-channels: |
             GHCupURL
             https://raw.githubusercontent.com/haskell/ghcup-metadata/refs/heads/master/ghcup-prereleases-0.0.8.yaml
       - run: |
-          ghcup install ghc --set ${{ matrix.ghc }}
-          ghcup install cabal --set ${{ matrix.cabal }}
           runhaskell Hello.hs
 ```
 
@@ -59,6 +59,10 @@ jobs:
 | Name             | Description                                                     | Type       | Default    |
 |------------------|-----------------------------------------------------------------|------------|------------|
 | version          | GHCup version to install                                        | `string`   | `latest`   |
+| ghc              | GHC version to install                                          | `string `  | `undefined`|
+| cabal            | cabal-install version to install                                | `string `  | `undefined`|
+| stack            | Stack version to install                                        | `string `  | `undefined`|
+| hls              | HLS version to install                                          | `string `  | `undefined`|
 | release-channels | Set the release-channels                                        | `string[]` | `GHCupURL` |
 | stack-hook       | Install the GHCup stack hook (GHCs are installed through ghcup) | `boolean`  | `false`    |
 

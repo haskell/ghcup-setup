@@ -118,6 +118,10 @@ export type Opts = {
   version: string;
   release_channels: string[];
   stack_hook: boolean;
+  ghc?: string;
+  cabal?: string;
+  stack?: string;
+  hls?: string;
 };
 
 export async function main(opts: Opts) {
@@ -171,4 +175,20 @@ export async function main(opts: Opts) {
     "url-source",
     JSON.stringify(opts.release_channels),
   ]);
+
+  if (opts.ghc) {
+    await exec.exec(ghcupPath, ["install", "ghc", "--set", opts.ghc]);
+  }
+
+  if (opts.cabal) {
+    await exec.exec(ghcupPath, ["install", "cabal", "--set", opts.cabal]);
+  }
+
+  if (opts.stack) {
+    await exec.exec(ghcupPath, ["install", "stack", "--set", opts.stack]);
+  }
+
+  if (opts.hls) {
+    await exec.exec(ghcupPath, ["install", "hls", "--set", opts.hls]);
+  }
 }
