@@ -10,9 +10,7 @@ inputs:
     description: GHCup version to install
     default: latest
   release-channels:
-    description: Set the release-channels
-    default: |
-      GHCupURL
+    description: Set the release-channels (deprecated, use 'config' instead)
   stack-hook:
     description: Install the GHCup stack hook (GHCs are installed through ghcup)
     default: false
@@ -24,6 +22,8 @@ inputs:
     description: Stack version to install
   hls:
     description: HLS version to install
+  config:
+    description: GHCup config (partial or full)
 
 outputs:
   path:
