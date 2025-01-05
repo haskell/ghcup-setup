@@ -135,6 +135,7 @@ export async function main(opts: Opts) {
   core.setOutput("version", effective_version);
   core.setOutput("path", ghcupPath);
 
+  // this first invocation will also make sure that all ghcup directories are created
   var { stdout } = await exec.getExecOutput(ghcupPath, ["whereis", "bindir"]);
   const bindir = stdout.trim();
   core.debug(`ghcup bindir is ${bindir}`);
