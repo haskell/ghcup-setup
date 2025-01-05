@@ -41,7 +41,8 @@ function ghcup_url(version: string, arch: GHCupArch, gos: GHCupOS): string {
 }
 
 async function ghcup(version: string) {
-  const ghcupDirectory = tc.find("ghcup", version);
+  const ghcupDirectory =
+    version == "latest" ? undefined : tc.find("ghcup", version);
   if (ghcupDirectory) {
     return ghcupDirectory;
   } else {
@@ -62,16 +63,17 @@ async function ghcup(version: string) {
     const dest = path.join(tempDirectory, ghcupExeName);
 
     const ghcupPath = await tc.downloadTool(url, dest);
-
     if (!platform.isWindows) {
       await chmod(ghcupPath, "0765");
     }
+    var { stdout } = await exec.getExecOutput(ghcupPath, ["--numeric-version"]);
+    const effective_version = stdout.trim();
 
     const ghcupDir = await tc.cacheFile(
       ghcupPath,
       ghcupExeName,
       "ghcup",
-      version,
+      effective_version,
     );
     return path.join(ghcupDir, ghcupExeName);
   }
