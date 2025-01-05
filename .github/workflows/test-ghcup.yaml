@@ -24,6 +24,8 @@ jobs:
       - run: ghcup --numeric-version || true
 
       - uses: ./
+        with:
+          version: ${{ matrix.version }}
 
       - run: which ghcup
       - run: ghcup --numeric-version
