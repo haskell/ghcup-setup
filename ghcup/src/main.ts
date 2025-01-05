@@ -73,7 +73,6 @@ async function ghcup(version: string) {
       "ghcup",
       version,
     );
-    core.addPath(ghcupDir);
     return path.join(ghcupDir, ghcupExeName);
   }
 }
@@ -139,6 +138,14 @@ export async function main(opts: Opts) {
   core.debug(`ghcup bindir is ${bindir}`);
   core.addPath(bindir);
   core.setOutput("bindir", bindir);
+
+  // copy ghcup binary to bindir (e.g. in case one is already installed)
+  try {
+    fs.unlinkSync(path.join(bindir, `ghcup${ext}`));
+  } catch (err: any) {
+    if (err) core.debug(err.message);
+  }
+  fs.copyFileSync(ghcupPath, path.join(bindir, `ghcup${ext}`));
 
   var { stdout } = await exec.getExecOutput(ghcupPath, ["whereis", "basedir"]);
   const basedir = stdout.trim();
