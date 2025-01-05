@@ -20,7 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - run: which ghcup || true
+      - run: ghcup --numeric-version || true
+
       - uses: ./
+
+      - run: which ghcup
+      - run: ghcup --numeric-version
 
       - run: ghcup config
       - run: ghcup debug-info
@@ -49,6 +55,36 @@ jobs:
 
       - if: runner.os == 'Windows'
         run: ghcup run -m sh -- -c 'pacman --version'
+
+  container:
+    runs-on: ubuntu-20.04
+    container:
+      image: debian:12
+    steps:
+      - run: |
+          apt-get update
+          apt-get install -y libnuma-dev zlib1g-dev libgmp-dev libgmp10 libssl-dev liblzma-dev libbz2-dev git wget lsb-release software-properties-common gnupg2 apt-transport-https gcc autoconf automake build-essential curl ghc gzip libffi-dev libncurses-dev libncurses5 libtinfo5 patchelf bash
+
+      - uses: actions/checkout@v4
+
+      - uses: ./
+
+      - run: which ghcup
+      - run: ghcup config
+      - run: ghcup debug-info
+      - run: ghcup tool-requirements
+      - run: ghcup list
+
+      - run: ghcup install ghc latest --set
+      - run: ghcup whereis ghc latest
+      - run: which ghc
+      - run: ghc --version
+
+      - run: ghcup install cabal latest --set
+      - run: ghcup whereis cabal latest
+      - run: which cabal
+      - run: cabal --version
+
 
   vanilla-channel:
     strategy:
