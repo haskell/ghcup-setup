@@ -48,6 +48,8 @@ jobs:
           ghc: ${{ matrix.ghc }}
           cabal: ${{ matrix.cabal }}
           config: |
+            # don't cache metadata files based on last access time
+            meta-cache: 0
             # see https://github.com/haskell/ghcup-hs/blob/master/data/config.yaml
             # for full documentation
             url-source:
@@ -66,7 +68,7 @@ jobs:
 | cabal            | cabal-install version to install                                | `string `  | `undefined`|
 | stack            | Stack version to install                                        | `string `  | `undefined`|
 | hls              | HLS version to install                                          | `string `  | `undefined`|
-| config           | Set ghcup config                                                | `string[]` | `[]`       |
+| config           | Set ghcup config                                                | `string[]` | `{"meta-cache": 0 }`       |
 | stack-hook       | Install the GHCup stack hook (GHCs are installed through ghcup) | `boolean`  | `false`    |
 
 ## Outputs

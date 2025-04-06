@@ -24,6 +24,7 @@ inputs:
     description: HLS version to install
   config:
     description: GHCup config (partial or full)
+    default: '{"meta-cache": 0 }'
 
 outputs:
   path:
