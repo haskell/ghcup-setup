@@ -182,6 +182,8 @@ export async function main(opts: Opts) {
 
   if (opts.config) {
     await exec.exec(ghcupPath, ["config", "set", JSON.stringify(opts.config)]);
+  } else {
+    await exec.exec(ghcupPath, ["config", "set", "meta-cache", "0"]);
   }
 
   if (opts.release_channels && opts.release_channels.length > 0) {
