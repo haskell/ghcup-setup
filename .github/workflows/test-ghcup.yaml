@@ -59,13 +59,11 @@ jobs:
         run: ghcup run -m sh -- -c 'pacman --version'
 
   container:
-    runs-on: ubuntu-20.04
-    container:
-      image: debian:12
+    runs-on: ubuntu-22.04
     steps:
       - run: |
-          apt-get update
-          apt-get install -y libnuma-dev zlib1g-dev libgmp-dev libgmp10 libssl-dev liblzma-dev libbz2-dev git wget lsb-release software-properties-common gnupg2 apt-transport-https gcc autoconf automake build-essential curl ghc gzip libffi-dev libncurses-dev libncurses5 libtinfo5 patchelf bash
+          sudo apt-get update
+          sudo apt-get install -y libnuma-dev zlib1g-dev libgmp-dev libgmp10 libssl-dev liblzma-dev libbz2-dev git wget lsb-release software-properties-common gnupg2 apt-transport-https gcc autoconf automake build-essential curl ghc gzip libffi-dev libncurses-dev libncurses5 libtinfo5 patchelf bash
 
       - uses: actions/checkout@v4
 
@@ -77,8 +75,8 @@ jobs:
       - run: ghcup tool-requirements
       - run: ghcup list
 
-      - run: ghcup install ghc latest --set
-      - run: ghcup whereis ghc latest
+      - run: ghcup install ghc 7.10.3 --set
+      - run: ghcup whereis ghc 7.10.3
       - run: which ghc
       - run: ghc --version
 
