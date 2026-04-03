@@ -62,6 +62,9 @@ jobs:
     runs-on: ubuntu-20.04
     container:
       image: debian:12
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Asia/Singapore
     steps:
       - run: |
           apt-get update
@@ -86,7 +89,6 @@ jobs:
       - run: ghcup whereis cabal latest
       - run: which cabal
       - run: cabal --version
-
 
   vanilla-channel:
     strategy:
@@ -163,3 +165,21 @@ jobs:
         run: |
           cat $(stack path --stack-root)/hooks/ghc-install.sh
         shell: bash
+
+  make:
+    runs-on: ubuntu-latest
+    container:
+      image: rockylinux:9
+    steps:
+      - run: |
+          dnf install -y git nodejs make
+      - uses: actions/checkout@v4
+      - run: |
+          set -eux
+          pushd ghcup
+          npx bun install
+          BUN="npx bun" make
+          popd
+          git config --global --add safe.directory $PWD
+          git status
+          git diff --exit-code

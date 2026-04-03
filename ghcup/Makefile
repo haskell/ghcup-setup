@@ -1,3 +1,6 @@
 .PHONY: dist/index.js
+
+BUN ?= bun
+
 dist/index.js:
-	bun build --target=node --minify --outfile=$@ src/index.ts
+	$(BUN) build --target=node --minify --outfile=$@ src/index.ts
