@@ -43,5 +43,5 @@ outputs:
     description: Config directory of GHCup
 
 runs:
-  using: node20
+  using: node24
   main: ghcup/dist/index.js
