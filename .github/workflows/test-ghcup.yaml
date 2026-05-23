@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  GHCUP_INSTALL_BASE_PREFIX: ${{ github.workspace }}
+
 jobs:
   simple:
     strategy:
@@ -59,7 +62,7 @@ jobs:
         run: ghcup run -m sh -- -c 'pacman --version'
 
   container:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     container:
       image: debian:12
     steps:

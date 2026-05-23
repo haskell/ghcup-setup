@@ -48,6 +48,8 @@ jobs:
           ghc: ${{ matrix.ghc }}
           cabal: ${{ matrix.cabal }}
           config: |
+            # 0 is off, 1 is on, 2 is chatty
+            verbose: 1
             # don't cache metadata files based on last access time
             meta-cache: 0
             # see https://github.com/haskell/ghcup-hs/blob/master/data/config.yaml
