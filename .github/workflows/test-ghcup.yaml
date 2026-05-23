@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  GHCUP_INSTALL_BASE_PREFIX: ${{ github.workspace }}
+
 jobs:
   simple:
     strategy:
