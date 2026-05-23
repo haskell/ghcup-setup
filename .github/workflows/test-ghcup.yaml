@@ -59,7 +59,7 @@ jobs:
         run: ghcup run -m sh -- -c 'pacman --version'
 
   container:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     container:
       image: debian:12
     steps:
